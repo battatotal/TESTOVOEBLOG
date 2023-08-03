@@ -1,0 +1,12 @@
+{% extends "blogapp/base.html" %}
+{% block title %}Мой блог{% endblock %}
+{% block content %}
+<a href="/blog"><h1>Мой блог</h1></a>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button style="margin-left: 100px;margin-top: 80px;" type="submit">Войти</button>
+</form>
+
+{% endblock %}

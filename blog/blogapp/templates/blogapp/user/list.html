@@ -1,0 +1,47 @@
+{% extends "blogapp/base.html" %}
+{% block title %}Мой блог{% endblock %}
+{% block content %}
+
+ <a href="/blog"><h1>Мой блог</h1>
+    {% for user in users %}
+     <h2>
+        <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
+         {% if user_selected == user.pk %}
+            <ul>
+                {% for post in user.blog_posts.select_related %}
+                {%with "delete/"|add:post.title as route%}
+                    {% if request.user.is_authenticated and post.user.username == request.user.username %}
+                    <li><a class="lnk" href="{{ route }}">{{ post.title }}</a></li>
+                    {% else %}
+                    <li>{{ post.title }}</li>
+                {% endif %}
+                {%endwith%}
+                {% endfor %}
+            </ul>
+         {% endif %}
+     </h2>
+
+    {% endfor %}
+     <hr>
+
+ <div>
+
+     {% if request.user.is_authenticated %}
+ <form style="margin-top: 150px;" action="." method="post">
+     <h3>Добавить пост</h3>
+     {% csrf_token %}
+     {% for f in addform %}
+
+        <div>{{f.label}}:</div>
+        <div>{{f}}</div>
+        <div>{{f.errors}}</div>
+        <br>
+        <br>
+     {% endfor %}
+     <button style="margin-bottom: 30px;" type="submit">Добавить</button>
+ </form>
+{%endif%}
+
+
+
+{% endblock %}
